@@ -900,12 +900,25 @@ namespace PX.SM.BoxStorageProvider
                 {
                     // Folder doesn't exist on Box, create it.
                     var description = entityRow != null ? GetFolderDescriptionForEntityRow(entityRow) : string.Empty;
-                    folderInfo = BoxUtils.CreateFolder(tokenHandler, folderName, parentFolderID, description).Result;
-                }
 
+                    //Copy subfolders from template folder if exists
+                    var templateFolderInfo = BoxUtils.FindFolder(tokenHandler, parentFolderID, "Template").Result;
+
+                    if (templateFolderInfo == null)
+                    {
+
+                        folderInfo = BoxUtils.CreateFolder(tokenHandler, folderName, parentFolderID, description).Result;
+                    }
+                    else
+                    {
+                        folderInfo = BoxUtils.CopyFolder(tokenHandler, templateFolderInfo.ID, parentFolderID, folderName, description).Result;
+                    }
+                }
+              
                 if (!FoldersByFolderID.Select(folderInfo.ID).Any())
                 {
                     // Store the folder info in our local cache for future reference
+                    // doesn't store content from template
                     BoxFolderCache bfc = (BoxFolderCache)FoldersByFolderID.Cache.CreateInstance();
                     bfc.FolderID = folderInfo.ID;
                     bfc.ParentFolderID = folderInfo.ParentFolderID;
@@ -927,8 +940,8 @@ namespace PX.SM.BoxStorageProvider
                         FoldersByFolderID.Delete(bfc);
                         Actions.PressSave();
                     }
-
-                    throw (new PXException(string.Format(Messages.BoxFolderNotFoundTryAgain, parentFolderID), exception));
+                    
+                    throw (new PXException(exception, Messages.BoxFolderNotFoundTryAgain, parentFolderID));
                 });
 
                 return null;

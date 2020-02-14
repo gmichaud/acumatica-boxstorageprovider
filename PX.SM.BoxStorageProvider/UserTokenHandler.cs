@@ -32,13 +32,6 @@ namespace PX.SM.BoxStorageProvider
                             new PXDataFieldAssign<BoxUserTokens.refreshToken>(PXDbType.NVarChar, 255, PX.Data.PXDB3DesCryphStringAttribute.Encrypt(e.Session.RefreshToken)),
                             new PXDataFieldAssign<BoxUserTokens.refreshTokenDate>(PXDbType.DateTime, 8, PXTimeZoneInfo.UtcNow),
                             new PXDataFieldRestrict<BoxUserTokens.userID>(PXDbType.UniqueIdentifier, 16, this.Accessinfo.UserID));
-
-                //BoxUserTokens currentUser = PXCache<BoxUserTokens>.CreateCopy(GetCurrentUser());
-                //currentUser.AccessToken = e.Session.AccessToken;
-                //currentUser.RefreshToken = e.Session.RefreshToken;
-                //currentUser.RefreshTokenDate = PXTimeZoneInfo.UtcNow;
-                //Caches[typeof(BoxUserTokens)].Update(currentUser);
-                //Caches[typeof(BoxUserTokens)].Persist(PXDBOperation.Update);
             }
         }
 
@@ -53,16 +46,6 @@ namespace PX.SM.BoxStorageProvider
                             new PXDataFieldAssign<BoxUserTokens.accessToken>(PXDbType.NVarChar, 255, null),
                             new PXDataFieldAssign<BoxUserTokens.refreshToken>(PXDbType.NVarChar, 255, null),
                             new PXDataFieldRestrict<BoxUserTokens.userID>(PXDbType.UniqueIdentifier, 16, this.Accessinfo.UserID));
-
-                //BoxUserTokens currentUser = GetCurrentUser();
-                //if (currentUser != null)
-                //{
-                //    currentUser = PXCache<BoxUserTokens­>.CreateCopy(currentUser);
-                //    currentUser.AccessToken = null;
-                //    currentUser.RefreshToken = null;
-                //    Caches[typeof(BoxUserTokens)].Update(currentUser);
-                //    Caches[typeof(BoxUserTokens)].Persist(PXDBOperation.Update);
-                //}
             }
 
             throw new PXException(Messages.BoxUserNotFoundOrTokensExpired);

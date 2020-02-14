@@ -42,6 +42,8 @@ namespace PX.SM.BoxStorageProvider
             var config = new BoxConfig(ClientID, ClientSecret, new Uri(RedirectUri));
             OAuthSession session = new OAuthSession(tokenHandler.GetCurrentUser().AccessToken, tokenHandler.GetCurrentUser().RefreshToken, Expiration, "bearer");
 
+            PXTrace.WriteInformation($"Establishing BoxSession a: {session.AccessToken} r: {session.RefreshToken}");
+
             var client = new BoxClient(config, session);
             client.Auth.SessionAuthenticated += tokenHandler.SessionAuthenticated;
             client.Auth.SessionInvalidated += tokenHandler.SessionInvalidated;
@@ -170,7 +172,7 @@ namespace PX.SM.BoxStorageProvider
         {
             var client = GetNewBoxClient(tokenHandler);
             var memoryStream = new MemoryStream();
-            using (Stream stream = await client.FilesManager.DownloadStreamAsync(fileID).ConfigureAwait(false))
+            using (Stream stream = await client.FilesManager.DownloadAsync(fileID).ConfigureAwait(false))
             {
                 int bytesRead;
                 var buffer = new byte[8192];

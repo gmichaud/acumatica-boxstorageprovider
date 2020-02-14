@@ -18,12 +18,12 @@ namespace PX.SM.BoxStorageProvider
 
         public abstract class accessToken : IBqlField { }
         [PXUIField(DisplayName = "Box Access Token", IsReadOnly = true, Visible = false)]
-        [PXDBCryptString(255)]
+        [PXDB3DesCryphStringAttribute(255)]
         public virtual string AccessToken { get; set; }
 
         public abstract class refreshToken : IBqlField { }
-        [PXDBCryptString(255)]
         [PXUIField(DisplayName = "Box Refresh Token", IsReadOnly = true, Visible = false)]
+        [PXDB3DesCryphStringAttribute(255)]
         public virtual string RefreshToken { get; set; }
 
         public abstract class refreshTokenDate : IBqlField { }

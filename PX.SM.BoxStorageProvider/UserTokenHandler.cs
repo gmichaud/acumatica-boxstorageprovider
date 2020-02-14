@@ -20,35 +20,49 @@ namespace PX.SM.BoxStorageProvider
 
         public void SessionAuthenticated(object sender, SessionAuthenticatedEventArgs e)
         {
+            PXTrace.WriteInformation($"Box Session authenticated a: {e.Session.AccessToken} r: {e.Session.RefreshToken} Expires in: {e.Session.ExpiresIn}");
+
             // We use a separate connection to ensure that the token gets persisted to the DB, regardless of any transaction rollback.
             // It could potentially happen that the token needs to get refreshed while a file is uploaded, but that this upload ultimately gets rolled back due to another
             // error later during the caller graph persisting process. If we use the current connection scope we have no control over this update.
-
             using (new PXConnectionScope())
             {
-                BoxUserTokens currentUser = PXCache<BoxUserTokens>.CreateCopy(GetCurrentUser());
-                currentUser.AccessToken = e.Session.AccessToken;
-                currentUser.RefreshToken = e.Session.RefreshToken;
-                currentUser.RefreshTokenDate = PXTimeZoneInfo.UtcNow;
-                Caches[typeof(BoxUserTokens)].Update(currentUser);
-                Caches[typeof(BoxUserTokens)].Persist(PXDBOperation.Update);
+                PXDatabase.Update<BoxUserTokens>(
+                            new PXDataFieldAssign<BoxUserTokens.accessToken>(PXDbType.NVarChar, 255, PX.Data.PXDB3DesCryphStringAttribute.Encrypt(e.Session.AccessToken)),
+                            new PXDataFieldAssign<BoxUserTokens.refreshToken>(PXDbType.NVarChar, 255, PX.Data.PXDB3DesCryphStringAttribute.Encrypt(e.Session.RefreshToken)),
+                            new PXDataFieldAssign<BoxUserTokens.refreshTokenDate>(PXDbType.DateTime, 8, PXTimeZoneInfo.UtcNow),
+                            new PXDataFieldRestrict<BoxUserTokens.userID>(PXDbType.UniqueIdentifier, 16, this.Accessinfo.UserID));
+
+                //BoxUserTokens currentUser = PXCache<BoxUserTokens>.CreateCopy(GetCurrentUser());
+                //currentUser.AccessToken = e.Session.AccessToken;
+                //currentUser.RefreshToken = e.Session.RefreshToken;
+                //currentUser.RefreshTokenDate = PXTimeZoneInfo.UtcNow;
+                //Caches[typeof(BoxUserTokens)].Update(currentUser);
+                //Caches[typeof(BoxUserTokens)].Persist(PXDBOperation.Update);
             }
         }
 
         public void SessionInvalidated(object sender, EventArgs e)
         {
+            PXTrace.WriteInformation("Box Session invalidated.");
+
             //Clear out stored token if any.
             using (new PXConnectionScope())
             {
-                BoxUserTokens currentUser = GetCurrentUser();
-                if (currentUser != null)
-                {
-                    currentUser = PXCache<BoxUserTokens­>.CreateCopy(currentUser);
-                    currentUser.AccessToken = null;
-                    currentUser.RefreshToken = null;
-                    Caches[typeof(BoxUserTokens)].Update(currentUser);
-                    Caches[typeof(BoxUserTokens)].Persist(PXDBOperation.Update);
-                }
+                PXDatabase.Update<BoxUserTokens>(
+                            new PXDataFieldAssign<BoxUserTokens.accessToken>(PXDbType.NVarChar, 255, null),
+                            new PXDataFieldAssign<BoxUserTokens.refreshToken>(PXDbType.NVarChar, 255, null),
+                            new PXDataFieldRestrict<BoxUserTokens.userID>(PXDbType.UniqueIdentifier, 16, this.Accessinfo.UserID));
+
+                //BoxUserTokens currentUser = GetCurrentUser();
+                //if (currentUser != null)
+                //{
+                //    currentUser = PXCache<BoxUserTokens­>.CreateCopy(currentUser);
+                //    currentUser.AccessToken = null;
+                //    currentUser.RefreshToken = null;
+                //    Caches[typeof(BoxUserTokens)].Update(currentUser);
+                //    Caches[typeof(BoxUserTokens)].Persist(PXDBOperation.Update);
+                //}
             }
 
             throw new PXException(Messages.BoxUserNotFoundOrTokensExpired);

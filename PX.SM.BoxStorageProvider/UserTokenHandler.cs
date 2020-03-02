@@ -39,14 +39,15 @@ namespace PX.SM.BoxStorageProvider
         {
             PXTrace.WriteInformation("Box Session invalidated.");
 
+            //2020-03-01 Disabling. That might help address concurrency issues when two threads are updating the tokens at the same time
             //Clear out stored token if any.
-            using (new PXConnectionScope())
-            {
-                PXDatabase.Update<BoxUserTokens>(
-                            new PXDataFieldAssign<BoxUserTokens.accessToken>(PXDbType.NVarChar, 255, null),
-                            new PXDataFieldAssign<BoxUserTokens.refreshToken>(PXDbType.NVarChar, 255, null),
-                            new PXDataFieldRestrict<BoxUserTokens.userID>(PXDbType.UniqueIdentifier, 16, this.Accessinfo.UserID));
-            }
+            //using (new PXConnectionScope())
+            //{
+            //    PXDatabase.Update<BoxUserTokens>(
+            //                new PXDataFieldAssign<BoxUserTokens.accessToken>(PXDbType.NVarChar, 255, null),
+            //                new PXDataFieldAssign<BoxUserTokens.refreshToken>(PXDbType.NVarChar, 255, null),
+            //                new PXDataFieldRestrict<BoxUserTokens.userID>(PXDbType.UniqueIdentifier, 16, this.Accessinfo.UserID));
+            //}
 
             throw new PXException(Messages.BoxUserNotFoundOrTokensExpired);
         }

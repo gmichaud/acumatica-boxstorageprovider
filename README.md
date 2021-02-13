@@ -60,10 +60,6 @@ The Screen Configuration screen is used to configure the folder hierarchy that w
 
 ![alt text](https://github.com/Acumatica/acumatica-boxstorageprovider/blob/master/ReadMeImages/screenConfig.png "")
 
-Known Issues
-------------
-The Box.com popup where you enter your credentials might appear blank on Google Chrome. Since this should only be done once, we recommend using another browser to complete this step.
-
 ## Copyright and License
 
 Copyright © `2016` `Acumatica`

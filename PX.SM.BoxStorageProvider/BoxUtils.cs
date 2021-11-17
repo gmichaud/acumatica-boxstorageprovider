@@ -172,7 +172,7 @@ namespace PX.SM.BoxStorageProvider
         {
             var client = GetNewBoxClient(tokenHandler);
             var memoryStream = new MemoryStream();
-            using (Stream stream = await client.FilesManager.DownloadAsync(fileID).ConfigureAwait(false))
+            using (Stream stream = await client.FilesManager.DownloadStreamAsync(fileID).ConfigureAwait(false))
             {
                 int bytesRead;
                 var buffer = new byte[8192];

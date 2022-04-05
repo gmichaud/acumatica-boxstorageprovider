@@ -95,7 +95,8 @@ namespace PX.SM.BoxStorageProvider
             {
                 ScreenUtils.HandleAggregateException(ae, HttpStatusCode.NotFound, (exception) =>
                 {
-                    throw new PXException(Messages.FileNotFoundInBox, bfc.FileID, exception);
+                    PXTrace.WriteInformation(Messages.FileNotFoundInBox, bfc.FileID, exception);
+                    //throw new PXException(Messages.FileNotFoundInBox, bfc.FileID, exception);
                 });
             }
         }

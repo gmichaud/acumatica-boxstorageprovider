@@ -170,19 +170,28 @@ namespace PX.SM.BoxStorageProvider
 
         public static async Task<byte[]> DownloadFile(UserTokenHandler tokenHandler, string fileID)
         {
-            var client = GetNewBoxClient(tokenHandler);
-            var memoryStream = new MemoryStream();
-            using (Stream stream = await client.FilesManager.DownloadStreamAsync(fileID).ConfigureAwait(false))
+            try
             {
-                int bytesRead;
-                var buffer = new byte[8192];
-                do
+                var client = GetNewBoxClient(tokenHandler);
+                var memoryStream = new MemoryStream();
+                using (Stream stream = await client.FilesManager.DownloadStreamAsync(fileID).ConfigureAwait(false))
                 {
-                    bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length).ConfigureAwait(false);
-                    await memoryStream.WriteAsync(buffer, 0, bytesRead).ConfigureAwait(false);
-                } while (bytesRead > 0);
+                    int bytesRead;
+                    var buffer = new byte[8192];
+                    do
+                    {
+                        bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length).ConfigureAwait(false);
+                        await memoryStream.WriteAsync(buffer, 0, bytesRead).ConfigureAwait(false);
+                    } while (bytesRead > 0);
+                }
+                return memoryStream.ToArray();
             }
-            return memoryStream.ToArray();
+            catch(Exception ex)
+            {
+                PXTrace.WriteError(ex);
+                PXTrace.WriteError("Unable to download file " + fileID);
+                return new byte[0];
+            }
         }
 
         public static async Task DeleteFile(UserTokenHandler tokenHandler, string fileID)

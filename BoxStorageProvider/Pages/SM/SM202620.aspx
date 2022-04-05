@@ -5,21 +5,13 @@
 
 <asp:Content ID="dsContent" ContentPlaceHolderID="phDS" runat="server">
     <px:PXDataSource ID="ds" runat="server" Visible="True" PrimaryView="Screens" TypeName="PX.SM.BoxStorageProvider.ScreenConfiguration" SuspendUnloading="False">
-        <DataTrees>
-			<px:PXTreeDataMember TreeView="SiteMap" TreeKeys="NodeID" />
-		</DataTrees>
     </px:PXDataSource>
 </asp:Content>
 <asp:Content ID="formContent" ContentPlaceHolderID="phF" runat="Server">
     <px:PXFormView ID="screensForm" runat="server" DataSourceID="ds" DataMember="Screens" Width="100%">
         <Template>
-            <px:PXTreeSelector ID="screenIDSelector" runat="server" DataField="ScreenID" Width="200px" PopulateOnDemand="True" ShowRootNode="False" 
-                TreeDataSourceID="ds" TreeDataMember="SiteMap" MinDropWidth="415">
-				<DataBindings>
-					<px:PXTreeItemBinding DataMember="SiteMap" TextField="Title" ValueField="ScreenID" ToolTipField="TitleWithPath" ImageUrlField="Icon" />
-				</DataBindings>
-				<AutoCallBack Command="Cancel" Target="ds"></AutoCallBack>
-			</px:PXTreeSelector>
+		 <px:PXLayoutRule ID="PXLayoutRule1" runat="server" ControlSize="XL" LabelsWidth="M" ></px:PXLayoutRule>  
+		 <px:PXSelector ID="edProductionReportID" runat="server" DataField="ScreenID" ValueField="ScreenID" DataSourceID="ds" CommitChanges="true"/>
         </Template>
     </px:PXFormView>
 </asp:Content>

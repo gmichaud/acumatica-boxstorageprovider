@@ -44,11 +44,14 @@
   <ItemGroup>
     <Reference Include="PX.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=3b136cac2f602b8e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Program Files\Acumatica ERP\AcumaticaDemo2020R2\Bin\PX.Common.dll</HintPath>
+      <HintPath>..\..\..\Program Files\Acumatica ERP\Panova\Bin\PX.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="PX.Common.Std">
+      <HintPath>..\..\..\Program Files\Acumatica ERP\Panova\Bin\PX.Common.Std.dll</HintPath>
     </Reference>
     <Reference Include="PX.Data, Version=1.0.0.0, Culture=neutral, PublicKeyToken=3b136cac2f602b8e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Program Files\Acumatica ERP\AcumaticaDemo2020R2\Bin\PX.Data.dll</HintPath>
+      <HintPath>..\..\..\Program Files\Acumatica ERP\Panova\Bin\PX.Data.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />

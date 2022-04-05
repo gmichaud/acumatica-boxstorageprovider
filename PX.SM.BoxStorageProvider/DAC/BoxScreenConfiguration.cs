@@ -10,9 +10,11 @@
         {
 		}
 		protected string _ScreenID;
-		[PXDBString(8, IsKey = true)]
-		[PXDefault()]
+		[PXDBString(8, InputMask = "CC.CC.CC.CC", IsKey = true)]
+		[PXDefault]
 		[PXUIField(DisplayName = "Screen")]
+		[PXSelector(typeof(Search<PX.SM.SiteMap.screenID>), typeof(PX.SM.SiteMap.screenID), typeof(PX.SM.SiteMap.title),
+			DescriptionField = typeof(PX.SM.SiteMap.title))]
 		public virtual string ScreenID
 		{
 			get

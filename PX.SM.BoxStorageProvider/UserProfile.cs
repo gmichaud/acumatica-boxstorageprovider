@@ -17,7 +17,7 @@ namespace PX.SM.BoxStorageProvider
 
         public PXAction<BoxUserTokens> login;
         [PXUIField(DisplayName = "Login to Box")]
-        [PXButton(ImageKey = "LinkWB")]
+        [PXButton]
         public virtual IEnumerable Login(PXAdapter adapter)
         {
             Actions.PressSave();

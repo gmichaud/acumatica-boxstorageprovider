@@ -96,7 +96,6 @@ namespace PX.SM.BoxStorageProvider
                 ScreenUtils.HandleAggregateException(ae, HttpStatusCode.NotFound, (exception) =>
                 {
                     PXTrace.WriteInformation(Messages.FileNotFoundInBox, bfc.FileID, exception);
-                    //throw new PXException(Messages.FileNotFoundInBox, bfc.FileID, exception);
                 });
             }
         }
@@ -630,13 +629,15 @@ namespace PX.SM.BoxStorageProvider
 
         private Guid? FindMatchingNoteIDForFolder(string screenID, string keyValues)
         {
-            string graphType = PXPageIndexingService.GetGraphTypeByScreenID(screenID);
+            var indexingService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IPXPageIndexingService>();
+
+            string graphType = indexingService.GetGraphTypeByScreenID(screenID);
             if (string.IsNullOrEmpty(graphType))
             {
                 throw new PXException(Messages.PrimaryGraphForScreenIDNotFound, screenID);
             }
 
-            string primaryViewName = PXPageIndexingService.GetPrimaryView(graphType);
+            string primaryViewName = indexingService.GetPrimaryView(graphType);
             if (string.IsNullOrEmpty(primaryViewName))
             {
                 throw new PXException(Messages.PrimaryGraphForScreenIDNotFound, graphType);

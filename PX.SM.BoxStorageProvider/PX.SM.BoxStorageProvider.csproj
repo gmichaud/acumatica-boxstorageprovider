@@ -36,22 +36,25 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>var.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PX.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=3b136cac2f602b8e, processorArchitecture=MSIL">
+    <Reference Include="CommonServiceLocator, Version=2.0.7.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Program Files\Acumatica ERP\Panova\Bin\PX.Common.dll</HintPath>
+      <HintPath>..\..\..\Program Files\Acumatica ERP\Files\Bin\CommonServiceLocator.dll</HintPath>
+    </Reference>
+    <Reference Include="PX.Common">
+      <HintPath>..\..\..\Program Files\Acumatica ERP\Files\Bin\PX.Common.dll</HintPath>
     </Reference>
     <Reference Include="PX.Common.Std">
-      <HintPath>..\..\..\Program Files\Acumatica ERP\Panova\Bin\PX.Common.Std.dll</HintPath>
+      <HintPath>..\..\..\Program Files\Acumatica ERP\Files\Bin\PX.Common.Std.dll</HintPath>
     </Reference>
-    <Reference Include="PX.Data, Version=1.0.0.0, Culture=neutral, PublicKeyToken=3b136cac2f602b8e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Program Files\Acumatica ERP\Panova\Bin\PX.Data.dll</HintPath>
+    <Reference Include="PX.Data">
+      <HintPath>..\..\..\Program Files\Acumatica ERP\Files\Bin\PX.Data.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
@@ -79,11 +82,11 @@
     <Compile Include="UserTokenHandler.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="var.snk" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\acumatica-box-windows-sdk-v2\Box.V2\Box.V2.csproj">
+    <ProjectReference Include="..\..\acumatica-box-windows-sdk-v2-master\Box.V2\Box.V2.csproj">
       <Project>{740075f5-8b88-4b8a-a75a-564f66359607}</Project>
       <Name>Box.V2</Name>
     </ProjectReference>

@@ -28,8 +28,8 @@ namespace PX.SM.BoxStorageProvider
             using (new PXConnectionScope())
             {
                 PXDatabase.Update<BoxUserTokens>(
-                            new PXDataFieldAssign<BoxUserTokens.accessToken>(PXDbType.NVarChar, 255, PX.Data.PXDB3DesCryphStringAttribute.Encrypt(e.Session.AccessToken)),
-                            new PXDataFieldAssign<BoxUserTokens.refreshToken>(PXDbType.NVarChar, 255, PX.Data.PXDB3DesCryphStringAttribute.Encrypt(e.Session.RefreshToken)),
+                            new PXDataFieldAssign<BoxUserTokens.accessToken>(PXDbType.NVarChar, 1024, PX.Data.PXRSACryptStringAttribute.Encrypt(e.Session.AccessToken)),
+                            new PXDataFieldAssign<BoxUserTokens.refreshToken>(PXDbType.NVarChar, 1024, PX.Data.PXRSACryptStringAttribute.Encrypt(e.Session.RefreshToken)),
                             new PXDataFieldAssign<BoxUserTokens.refreshTokenDate>(PXDbType.DateTime, 8, PXTimeZoneInfo.UtcNow),
                             new PXDataFieldRestrict<BoxUserTokens.userID>(PXDbType.UniqueIdentifier, 16, this.Accessinfo.UserID));
             }
@@ -38,16 +38,6 @@ namespace PX.SM.BoxStorageProvider
         public void SessionInvalidated(object sender, EventArgs e)
         {
             PXTrace.WriteInformation("Box Session invalidated.");
-
-            //2020-03-01 Disabling. That might help address concurrency issues when two threads are updating the tokens at the same time
-            //Clear out stored token if any.
-            //using (new PXConnectionScope())
-            //{
-            //    PXDatabase.Update<BoxUserTokens>(
-            //                new PXDataFieldAssign<BoxUserTokens.accessToken>(PXDbType.NVarChar, 255, null),
-            //                new PXDataFieldAssign<BoxUserTokens.refreshToken>(PXDbType.NVarChar, 255, null),
-            //                new PXDataFieldRestrict<BoxUserTokens.userID>(PXDbType.UniqueIdentifier, 16, this.Accessinfo.UserID));
-            //}
 
             throw new PXException(Messages.BoxUserNotFoundOrTokensExpired);
         }

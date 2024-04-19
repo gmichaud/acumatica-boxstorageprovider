@@ -123,10 +123,12 @@ namespace PX.SM.BoxStorageProvider
 
         private static bool ScreenPrimaryViewSupportsAttachments(PXGraph graph, string screenID)
         {
-            string graphType = PXPageIndexingService.GetGraphTypeByScreenID(screenID);
+            var indexingService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IPXPageIndexingService>();
+
+            string graphType = indexingService.GetGraphTypeByScreenID(screenID);
             if (string.IsNullOrEmpty(graphType)) return false;
 
-            string primaryViewName = PXPageIndexingService.GetPrimaryView(graphType);
+            string primaryViewName = indexingService.GetPrimaryView(graphType);
             if (string.IsNullOrEmpty(primaryViewName)) return false;
 
             PXViewInfo view = GraphHelper.GetGraphView(graphType, primaryViewName);

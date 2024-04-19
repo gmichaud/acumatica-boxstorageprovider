@@ -1,13 +1,40 @@
 ﻿<SiteMapNode>
     <data-set>
-        <relations version="3" main-table="SiteMap" />
+        <relations format-version="3" relations-version="20190730" main-table="SiteMap">
+            <link from="MUIScreen (NodeID)" to="SiteMap (NodeID)" />
+            <link from="MUIWorkspace (WorkspaceID)" to="MUIScreen (WorkspaceID)" type="FromMaster" linkname="workspaceToScreen" split-location="yes" updateable="True" />
+            <link from="MUISubcategory (SubcategoryID)" to="MUIScreen (SubcategoryID)" type="FromMaster" updateable="True" />
+            <link from="MUITile (ScreenID)" to="SiteMap (ScreenID)" />
+            <link from="MUIWorkspace (WorkspaceID)" to="MUITile (WorkspaceID)" type="FromMaster" linkname="workspaceToTile" split-location="yes" updateable="True" />
+            <link from="MUIArea (AreaID)" to="MUIWorkspace (AreaID)" type="FromMaster" updateable="True" />
+            <link from="MUIPinnedScreen (NodeID, WorkspaceID)" to="MUIScreen (NodeID, WorkspaceID)" type="WeakIfEmpty" isEmpty="Username" />
+            <link from="MUIFavoriteWorkspace (WorkspaceID)" to="MUIWorkspace (WorkspaceID)" type="WeakIfEmpty" isEmpty="Username" />
+        </relations>
         <layout>
-            <table name="SiteMap" />
+            <table name="SiteMap">
+                <table name="MUIScreen" uplink="(NodeID) = (NodeID)">
+                    <table name="MUIPinnedScreen" uplink="(NodeID, WorkspaceID) = (NodeID, WorkspaceID)" />
+                </table>
+                <table name="MUITile" uplink="(ScreenID) = (ScreenID)" />
+            </table>
+            <table name="MUIWorkspace">
+                <table name="MUIFavoriteWorkspace" uplink="(WorkspaceID) = (WorkspaceID)" />
+            </table>
+            <table name="MUISubcategory" />
+            <table name="MUIArea" />
         </layout>
         <data>
             <SiteMap>
-                <row Position="3" Title="Folder Synchronization" Url="~/Pages/SM/SM202630.aspx" Expanded="0" IsFolder="0" ScreenID="SM202630" NodeID="5ada29f4-9a8e-4ea1-bbc7-e8e22de9e8f7" ParentID="d70800a5-c6fb-4d99-8451-920bb9d5bd6c" />
+                <row Position="3" Title="Folder Synchronization" Url="~/Pages/SM/SM202630.aspx" ScreenID="SM202630" NodeID="5ada29f4-9a8e-4ea1-bbc7-e8e22de9e8f7" ParentID="d70800a5-c6fb-4d99-8451-920bb9d5bd6c">
+                    <MUIScreen IsPortal="0" WorkspaceID="d4593b67-fa53-4ea9-b6ff-fe5963fd6aa8" Order="10" SubcategoryID="aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa" />
+                </row>
             </SiteMap>
+            <MUIWorkspace>
+                <row IsPortal="0" WorkspaceID="d4593b67-fa53-4ea9-b6ff-fe5963fd6aa8" Order="875" Title="Box Integration" Icon="files" AreaID="3635ea7d-0975-48ff-b4ac-a870f7e1e8b5" IsSystem="0" />
+            </MUIWorkspace>
+            <MUIArea>
+                <row IsPortal="0" AreaID="3635ea7d-0975-48ff-b4ac-a870f7e1e8b5" Order="30" Name="Configuration" />
+            </MUIArea>
         </data>
     </data-set>
 </SiteMapNode>

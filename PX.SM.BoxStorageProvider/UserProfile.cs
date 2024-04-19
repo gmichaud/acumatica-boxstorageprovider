@@ -20,6 +20,11 @@ namespace PX.SM.BoxStorageProvider
         [PXButton]
         public virtual IEnumerable Login(PXAdapter adapter)
         {
+            if(PXRSACryptStringAttribute.Encrypt("test") == "test")
+            {
+                throw new PXException("Encryption certificate needs to be setup for your site before you can login.");
+            }
+
             Actions.PressSave();
 
             string state = "acumaticaUrl=" + HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) + System.Web.VirtualPathUtility.ToAbsolute("~/Frames/BoxAuth.aspx") +

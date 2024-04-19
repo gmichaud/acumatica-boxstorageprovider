@@ -22,7 +22,9 @@ namespace PX.SM.BoxStorageProvider
             var screenConfig = e.Row as BoxScreenConfiguration;
             if (!string.IsNullOrEmpty(screenConfig.ScreenID))
             {
-                string graphTypeName = PXPageIndexingService.GetGraphTypeByScreenID(screenConfig.ScreenID);
+                var indexingService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IPXPageIndexingService>();
+
+                string graphTypeName = indexingService.GetGraphTypeByScreenID(screenConfig.ScreenID);
                 if (string.IsNullOrEmpty(graphTypeName))
                 {
                     throw new PXException(Messages.PrimaryGraphForScreenIDNotFound, screenConfig.ScreenID);
@@ -30,7 +32,7 @@ namespace PX.SM.BoxStorageProvider
                 Type graphType = PXBuildManager.GetType(graphTypeName, true);
                 var graph = PXGraph.CreateInstance(graphType);
 
-                string primaryViewName = PXPageIndexingService.GetPrimaryView(graphTypeName);
+                string primaryViewName = indexingService.GetPrimaryView(graphTypeName);
                 PXView view = graph.Views[primaryViewName];
 
                 //Construct ddl values and displayed values, specifying field name for duplicates

@@ -12,14 +12,19 @@ A custom file storage provider for Acumatica that allow tight integration with B
 
 
 ### Prerequisites
-* Acumatica 5.3 or higher
+* Acumatica 2023 R2 or later
 * A Box.com account (personal or enterprise)
+
+### Notes
+* The Box integration has to be the first customization that you publish when upgrading a new instance; Acumatica stores customization projects on the external file storage provider, meaning it will not be able to publish anything else unless the Box integration is published
+* Starting in 2023 R2, encryption certificates need to be configured for the site, or else the authentication process will fail.
+
 
 Quick Start
 -----------
 
 ### Installation
-Import and publish the customization package.
+Import and publish the customization package. 
 
 1. Go to Configuration > Document Management > Configure > External File Storage
 2. Choose Box.com Storage from the Provider drop down list

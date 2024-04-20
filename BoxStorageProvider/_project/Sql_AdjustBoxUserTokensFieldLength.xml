@@ -1,10 +1,7 @@
 ﻿<Sql TableName="AdjustBoxUserTokensFieldLength" CustomScript="#CDATA">
-    <CDATA name="CustomScript"><![CDATA[IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'BoxUserTokens')
-BEGIN
-ALTER TABLE BoxUserTokens ALTER COLUMN AccessToken nvarchar(1024)
+    <CDATA name="CustomScript"><![CDATA[ALTER TABLE BoxUserTokens ALTER COLUMN AccessToken nvarchar(1024)
 GO
 
 ALTER TABLE BoxUserTokens ALTER COLUMN RefreshToken nvarchar(1024)
-GO
-END]]></CDATA>
+GO]]></CDATA>
 </Sql>

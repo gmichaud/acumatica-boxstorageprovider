@@ -1,4 +1,4 @@
-﻿<Sql TableName="AdjustBoxUserTokensFieldLength" CustomScript="#CDATA">
+<Sql TableName="AdjustBoxUserTokensFieldLength" CustomScript="#CDATA">
     <CDATA name="CustomScript"><![CDATA[ALTER TABLE BoxUserTokens ALTER COLUMN AccessToken nvarchar(1024)
 GO
 

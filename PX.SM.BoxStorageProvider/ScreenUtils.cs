@@ -66,7 +66,7 @@ namespace PX.SM.BoxStorageProvider
             aggregateException.Handle((e) =>
             {
                 PXTrace.WriteError(e);
-                var boxException = e as BoxException;
+                var boxException = e as BoxAPIException;
                 if (boxException != null && boxException.StatusCode == codeToHandle)
                 {
                     action(e);

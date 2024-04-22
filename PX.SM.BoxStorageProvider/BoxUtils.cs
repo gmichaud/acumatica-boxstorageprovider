@@ -86,7 +86,7 @@ namespace PX.SM.BoxStorageProvider
         {
             var folderRequest = new BoxFolderRequest { Name = name, Parent = new BoxRequestEntity { Id = parentFolderID } };
             Box.V2.Models.BoxFolder folder = await client.FoldersManager.CreateAsync(folderRequest, new List<string> { BoxItem.FieldName, BoxItem.FieldModifiedAt }).ConfigureAwait(false);
-            return new FileFolderInfo(folder.Id, folder.Name, parentFolderID, folder.ModifiedAt);
+            return new FileFolderInfo(folder.Id, folder.Name, parentFolderID, folder.ModifiedAt?.UtcDateTime);
         }
 
         public static async Task<FileFolderInfo> CreateFolder(UserTokenHandler tokenHandler, string name, string parentFolderID, string description)
@@ -122,7 +122,7 @@ namespace PX.SM.BoxStorageProvider
                     ID = folderID,
                     Name = folder.Name,
                     ParentFolderID = folder.Parent.Id,
-                    ModifiedAt = folder.ModifiedAt
+                    ModifiedAt = folder.ModifiedAt?.UtcDateTime
                 };
             }
 
@@ -138,7 +138,7 @@ namespace PX.SM.BoxStorageProvider
                 ID = file.Id,
                 Name = file.Name,
                 ParentFolderID = file.Parent == null ? "0" : file.Parent.Id,
-                ModifiedAt = file.ModifiedAt
+                ModifiedAt = file.ModifiedAt?.UtcDateTime
             };
         }
 
@@ -151,7 +151,7 @@ namespace PX.SM.BoxStorageProvider
                 ID = folder.Id,
                 Name = folder.Name,
                 ParentFolderID = folder.Parent == null ? "0" : folder.Parent.Id,
-                ModifiedAt = folder.ModifiedAt
+                ModifiedAt = folder.ModifiedAt?.UtcDateTime
             };
         }
 
@@ -174,7 +174,7 @@ namespace PX.SM.BoxStorageProvider
             {
                 var client = GetNewBoxClient(tokenHandler);
                 var memoryStream = new MemoryStream();
-                using (Stream stream = await client.FilesManager.DownloadStreamAsync(fileID).ConfigureAwait(false))
+                using (Stream stream = await client.FilesManager.DownloadAsync(fileID).ConfigureAwait(false))
                 {
                     int bytesRead;
                     var buffer = new byte[8192];
@@ -223,7 +223,7 @@ namespace PX.SM.BoxStorageProvider
                 Parent = new BoxRequestEntity() { Id = parentFolderID, Type = BoxType.folder } };
             BoxFolder folder = await client.FoldersManager.CopyAsync(folderRequest, new List<string> { BoxItem.FieldName, BoxItem.FieldModifiedAt, BoxItem.FieldParent }).ConfigureAwait(false);
             
-            return new FileFolderInfo(folder.Id, folder.Name, folder.Parent.Id, folder.ModifiedAt);
+            return new FileFolderInfo(folder.Id, folder.Name, folder.Parent.Id, folder.ModifiedAt?.UtcDateTime);
         }
 
         public static async Task<FileFolderInfo> FindFolder(UserTokenHandler tokenHandler, string parentFolderID, string name)
@@ -240,7 +240,7 @@ namespace PX.SM.BoxStorageProvider
             var folderRequest = new BoxFolderRequest { Id = movingFolderID, Parent = new BoxRequestEntity() { Id = newParentFolderID, Type = BoxType.folder } };
             BoxFolder folder = await client.FoldersManager.UpdateInformationAsync(folderRequest, new List<string> { BoxItem.FieldName, BoxItem.FieldModifiedAt, BoxItem.FieldParent }).ConfigureAwait(false);
 
-            return new FileFolderInfo(folder.Id, folder.Name, folder.Parent.Id, folder.ModifiedAt);
+            return new FileFolderInfo(folder.Id, folder.Name, folder.Parent.Id, folder.ModifiedAt?.UtcDateTime);
         }
 
         private static async Task<FileFolderInfo> FindFolderInternal(BoxClient client, string parentFolderID, int offset, string name)
@@ -257,7 +257,7 @@ namespace PX.SM.BoxStorageProvider
                         ID = item.Id,
                         Name = item.Name,
                         ParentFolderID = parentFolderID,
-                        ModifiedAt = item.ModifiedAt
+                        ModifiedAt = item.ModifiedAt?.UtcDateTime
                     };
                 }
             }
@@ -314,8 +314,8 @@ namespace PX.SM.BoxStorageProvider
                         ID = item.Id,
                         ParentFolderID = folderID,
                         Name = string.IsNullOrEmpty(levelName) ? item.Name : string.Format("{0}\\{1}", levelName, item.Name),
-                        ModifiedAt = item.ModifiedAt
-                    });
+                        ModifiedAt = item.ModifiedAt?.UtcDateTime
+                    }) ;
 
                     if (currentDepth < recurseDepth || recurseDepth == 0)
                     {

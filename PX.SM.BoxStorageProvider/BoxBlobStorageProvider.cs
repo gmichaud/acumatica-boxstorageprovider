@@ -19,14 +19,14 @@ namespace PX.SM.BoxStorageProvider
             // This function name is misleading -- this is invoked when the user clicks the "Browse Box Files" button. 
             FileHandler graph = PXGraph.CreateInstance<FileHandler>();
             string folderID = graph.GetOrCreateBoxFolderForNoteID(noteID);
-            throw new PXRedirectToUrlException("https://app.box.com/folder/" + folderID, PXBaseRedirectException.WindowMode.New, "Box.com Folder");
+            throw new PXRedirectToUrlException("https://app.boxenterprise.net/folder/" + folderID, PXBaseRedirectException.WindowMode.New, "Box.com Folder");
         }
 
         public string GetEditUrl(Guid fileID)
         {
             FileHandler graph = PXGraph.CreateInstance<FileHandler>();
             BoxUtils.FileFolderInfo file = graph.GetBoxFileInfoForFileID(fileID);
-            return "https://app.box.com/file/" + file.ParentFolderID + "/1/f_" + file.ID;
+            return "https://app.boxenterprise.net/file/" + file.ID;
         }
 
         public string GetIdentity()
